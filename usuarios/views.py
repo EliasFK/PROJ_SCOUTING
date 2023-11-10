@@ -10,11 +10,14 @@ def cadastro(request):
         email = request.POST.get('email')
         senha = request.POST.get('senha')
 
-        user = User.objects.get(username=username)
+        user = User.objects.filter(username=username).first()
         if user:
             return HttpResponse('já existe um usuario com esse username!')
 
-        return HttpResponse(username)
+        user = User.objects.create_user(username=username, email=email, password=senha)
+        user.save()
+
+        return HttpResponse('usuario cadastrado com sucesso!')
 
 
 def login(request):
